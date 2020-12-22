@@ -1,142 +1,132 @@
-TRUNCATE TABLE supplier,location,branch,shop_product,
-    customer,card_details,orders,ordered_product,
-    daily_profit,total_daily_profit;
-DROP TABLE supplier,location,branch,shop_product,
-    customer,card_details,orders,ordered_product,
-    daily_profit,total_daily_profit;
+{\rtf1\ansi\ansicpg1252\cocoartf2511
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red191\green100\blue38;\red32\green32\blue32;\red153\green168\blue186;
+\red133\green96\blue154;\red86\green132\blue173;\red88\green118\blue71;}
+{\*\expandedcolortbl;;\csgenericrgb\c74902\c39216\c14902;\csgenericrgb\c12549\c12549\c12549;\csgenericrgb\c60000\c65882\c72941;
+\csgenericrgb\c52157\c37647\c60392;\csgenericrgb\c33725\c51765\c67843;\csgenericrgb\c34510\c46275\c27843;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
 
-CREATE TABLE supplier (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(36)
-);
-
-CREATE TABLE location (
-    id SERIAL PRIMARY KEY NOT NULL,
-    x INT NOT NULL,
-    y INT NOT NULL,
-    z INT NOT NULL
-);
-
-CREATE TABLE branch (
-    id SERIAL PRIMARY KEY NOT NULL,
-    name VARCHAR(36) NOT NULL
-);
-INSERT INTO branch(name) VALUES('Paddington');
-INSERT INTO branch(name) VALUES('Green Park');
-INSERT INTO branch(name) VALUES('East End');
-
-CREATE TABLE shop_product (
-    id SERIAL PRIMARY KEY NOT NULL,
-    category VARCHAR(36) NOT NULL,
-    brand VARCHAR(36) NOT NULL,
-    name VARCHAR(36) NOT NULL,
-    amount VARCHAR(36),
-    sell_price DECIMAL(10,2) NOT NULL,
-    buy_price DECIMAL(10,2) NOT NULL,
-    quantity SMALLINT NOT NULL,
-    full_stock SMALLINT NOT NULL,
-    limit_of_1 SMALLINT,
-    soft_min DECIMAL(10,2),
-    hard_min DECIMAL(10,2),
-
-    branch_id INT REFERENCES branch (id),
-    UNIQUE(location_id),
-    location_id INT REFERENCES location (id)
-);
-INSERT INTO shop_product(category,brand,name,amount,sell_price,buy_price,quantity,full_stock,limit_of_1) VALUES('Cold and Flu','Vicks','Vaporub','100g',4.5,3.7,15,15,null),
-      ('Cold and Flu','Vicks','First Defence','15ml',6.8,5,20,20,null),
-      ('Cold and Flu','Gsk','Night Nurse','160ml',8.5,7,30,30,null),
-      ('Cold and Flu','Gsk','Night Nurse','160ml',9,7.5,30,30,null),
-      ('Cold and Flu','Lemsip','Max','16 caps',4.2,3.7,25,25,null),
-      ('Cold and Flu','Lemsip','Standard','10 sachets',4.5,3.5,25,25,null),
-      ('Cold and Flu','Sudafed','Day and Night','16 caps',4.5,3.2,30,30,1),
-      ('Cold and Flu','Sudafed','Max','16 caps',4.2,3.2,30,30,1),
-      ('Cold and Flu','Benylin','Mucus relief','16 caps',4.8,3.2,20,20,null),
-      ('Cold and Flu','Benylin','4 flu','24 caps',6,4.9,20,20,null),
-
-      ('Skincare','E45','Psoriasis cream','50ml',20,16,15,15,null),
-      ('Skincare','Eurax','Skin cream','100g',5.7,4.2,15,15,null),
-      ('Skincare','Eucerin','Skin relief cream','50ml',9,7,20,20,null),
-      ('Skincare','Eucerin','Face scrub','100ml',7.5,6,20,20,null),
-      ('Skincare','Dermalex','Psoriasis cream','150ml',30,25,10,10,null),
-      ('Skincare','Dermalex','Repair and Restore','100g',12,10,10,10,null),
-      ('Skincare','Dermalex','Eczema cream','100g',25,22.2,5,5,null),
-      ('Skincare','Cetaphil','Moisturising cream','50ml',10,7.6,20,20,null),
-      ('Skincare','Cetaphil','Exfoliating cleanser','180ml',12,10.1,20,20,null),
-
-      ('Headaches and pain relief','Nurofen','Meltlets','16 caps',4,3.7,40,40,null),
-      ('Headaches and pain relief','Nurofen','Express','16 caps',4,3.5,30,30,null),
-      ('Headaches and pain relief','Nurofen','Max strength','32 caps',7,6.2,25,25,null),
-      ('Headaches and pain relief','Nurofen','Standard','16 caps',4,3.2,30,30,null),
-      ('Headaches and pain relief','Cuprofen ','Max strength','96 caps',11,9,20,20,1),
-      ('Headaches and pain relief','Solpadeine','Headache','16 caps',2,1.6,20,20,1),
-      ('Headaches and pain relief','Anadin','Extra','16 caps',2.3,2,30,30,1),
-      ('Headaches and pain relief','Anadin','Triple action','12 caps',2,1.9,30,30,1),
-      ('Headaches and pain relief','Anadin','Original','16 caps',1.8,1.5,30,30,1),
-      ('Headaches and pain relief','Disprin','Soluble','32 tablets',3.6,2.8,20,20,1),
-
-      ('Digestion','Dioralyte','Blackcurrant','12 sachets',8,7.3,20,20,null),
-      ('Digestion','Dioralyte','Lemon','12 sachets',8,7.3,20,20,null),
-      ('Digestion','Gaviscon','Chewable','24 tablets',4.2,3.5,25,25,null),
-      ('Digestion','Senokot','Max','10 tablets',3,2.7,10,10,null),
-      ('Digestion','Gaviscon','Advance','300ml',10,8.1,10,10,null),
-
-      ('Allergy','Benadryl','Relief','24 caps',9,7.1,20,20,null),
-      ('Allergy','Piriteze','tabs','7 tablets',3,2.3,20,20,null),
-      ('Allergy','Beconase','Relief','100 sprays',6,4,20,20,null),
-
-      ('First aid','Dettol','Antiseptic','500ml',3.2,3,20,20,null),
-      ('First aid','Dettol','Hand sanitizer','500ml',7,6.3,50,50,null),
-      ('First aid','Elastoplast','plasters','20 plasters',3,2,30,30,null),
-      ('First aid','TCP','Liquid','200ml',4,3.2,20,20,null);
-UPDATE shop_product SET branch_id = 1;
-
-CREATE TABLE customer (
-      id SERIAL PRIMARY KEY NOT NULL,
-      first_name VARCHAR(36) NOT NULL,
-      last_name VARCHAR(36) NOT NULL,
-      phone_no VARCHAR(12) NOT NULL,
-      address VARCHAR(128),
-      postcode VARCHAR(8),
-      email VARCHAR(256)
-);
-INSERT INTO customer(first_name,last_name,phone_no) VALUES('CW','Yip','05640787243');
-
-CREATE TABLE orders (
-    id SERIAL PRIMARY KEY NOT NULL,
-    date TIMESTAMP NOT NULL,
-    customer_id INT REFERENCES customer (id)
-);
-INSERT INTO orders(date,customer_id) VALUES('2020-11-14 16:00:00',1);
-
-CREATE TABLE ordered_product (
-     id SERIAL PRIMARY KEY NOT NULL,
-     name VARCHAR(32) NOT NULL,
-     quantity INTEGER NOT NULL,
-     sell_price DECIMAL(10,2) NOT NULL,
-     orders_id INT REFERENCES orders (id)
-);
-
-CREATE TABLE card_details (
-      id SERIAL PRIMARY KEY,
-      card_no VARCHAR(16),
-      cvv VARCHAR(3),
-      sort_code VARCHAR(6),
-      account_no VARCHAR(8),
-      customer_id INT REFERENCES customer (id)
-);
-INSERT INTO card_details(card_no,cvv,sort_code,account_no,customer_id) VALUES('4638563856739684','313','600807','36559684',1);
-
-CREATE TABLE daily_profit (
-    id SERIAL PRIMARY KEY,
-    date DATE NOT NULL,
-    profit DECIMAL(10,2),
-    total_daily_profit_id INT REFERENCES total_daily_profit(id)
-);
-
-CREATE TABLE total_daily_profit (
-    id SERIAL PRIMARY KEY,
-    date DATE,
-    total_profit DECIMAL(10,2)
-)
+\f0\fs26 \cf2 \cb3 TRUNCATE TABLE \cf4 branch\cf2 ,\cf4 shop_product\cf2 ,\
+    \cf4 customer\cf2 ,\cf4 card_details\cf2 ,\cf4 orders\cf2 ,\cf4 ordered_product\cf2 ,\cf4 daily_profit\cf2 ;\
+DROP TABLE \cf4 branch\cf2 ,\cf4 shop_product\cf2 ,\
+    \cf4 customer\cf2 ,\cf4 card_details\cf2 ,\cf4 orders\cf2 ,\cf4 ordered_product\cf2 ,\cf4 daily_profit\cf2 ;\
+\
+CREATE TABLE \cf4 branch (\
+    \cf5 id \cf2 SERIAL PRIMARY KEY NOT NULL,\
+    \cf5 name \cf2 VARCHAR\cf4 (\cf6 36\cf4 ) \cf2 NOT NULL\
+\cf4 )\cf2 ;\
+INSERT INTO \cf4 branch(\cf5 name\cf4 ) \cf2 VALUES\cf4 (\cf7 'Paddington'\cf4 )\cf2 ;\
+INSERT INTO \cf4 branch(\cf5 name\cf4 ) \cf2 VALUES\cf4 (\cf7 'Green Park'\cf4 )\cf2 ;\
+INSERT INTO \cf4 branch(\cf5 name\cf4 ) \cf2 VALUES\cf4 (\cf7 'East End'\cf4 )\cf2 ;\
+\
+CREATE TABLE \cf4 shop_product (\
+    \cf5 id \cf2 SERIAL PRIMARY KEY NOT NULL,\
+    \cf5 category \cf2 VARCHAR\cf4 (\cf6 36\cf4 ) \cf2 NOT NULL,\
+    \cf5 brand \cf2 VARCHAR\cf4 (\cf6 36\cf4 ) \cf2 NOT NULL,\
+    \cf5 name \cf2 VARCHAR\cf4 (\cf6 36\cf4 ) \cf2 NOT NULL,\
+    \cf5 amount \cf2 VARCHAR\cf4 (\cf6 36\cf4 )\cf2 ,\
+    \cf5 sell_price \cf2 DECIMAL\cf4 (\cf6 10\cf2 ,\cf6 2\cf4 ) \cf2 NOT NULL,\
+    \cf5 buy_price \cf2 DECIMAL\cf4 (\cf6 10\cf2 ,\cf6 2\cf4 ) \cf2 NOT NULL,\
+    \cf5 quantity \cf2 SMALLINT NOT NULL,\
+    \cf5 full_stock \cf2 SMALLINT NOT NULL,\
+    \cf5 limit_of_1 \cf2 SMALLINT,\
+    \cf5 soft_min \cf2 DECIMAL\cf4 (\cf6 10\cf2 ,\cf6 2\cf4 )\cf2 ,\
+    \cf5 hard_min \cf2 DECIMAL\cf4 (\cf6 10\cf2 ,\cf6 2\cf4 )\cf2 ,\
+\
+    \cf5 branch_id \cf2 INT REFERENCES \cf4 branch (\cf5 id\cf4 )\
+)\cf2 ;\
+\
+CREATE TABLE \cf4 daily_profit (\
+    \cf5 id \cf2 SERIAL PRIMARY KEY,\
+    \cf5 date \cf2 DATE NOT NULL,\
+    \cf5 profit \cf2 DECIMAL\cf4 (\cf6 10\cf2 ,\cf6 2\cf4 )\cf2 ,\
+\
+    \cf5 branch_id \cf2 INT REFERENCES \cf4 branch (\cf5 id\cf4 )\
+)\cf2 ;\
+\
+INSERT INTO \cf4 shop_product(\cf5 category\cf2 ,\cf5 brand\cf2 ,\cf5 name\cf2 ,\cf5 amount\cf2 ,\cf5 sell_price\cf2 ,\cf5 buy_price\cf2 ,\cf5 quantity\cf2 ,\cf5 full_stock\cf2 ,\cf5 limit_of_1\cf4 ) \cf2 VALUES\cf4 (\cf7 'Cold and Flu'\cf2 ,\cf7 'Vicks'\cf2 ,\cf7 'Vaporub'\cf2 ,\cf7 '100g'\cf2 ,\cf6 4.5\cf2 ,\cf6 3.7\cf2 ,\cf6 15\cf2 ,\cf6 15\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Cold and Flu'\cf2 ,\cf7 'Vicks'\cf2 ,\cf7 'First Defence'\cf2 ,\cf7 '15ml'\cf2 ,\cf6 6.8\cf2 ,\cf6 5\cf2 ,\cf6 20\cf2 ,\cf6 20\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Cold and Flu'\cf2 ,\cf7 'Gsk'\cf2 ,\cf7 'Night Nurse'\cf2 ,\cf7 '160ml'\cf2 ,\cf6 8.5\cf2 ,\cf6 7\cf2 ,\cf6 30\cf2 ,\cf6 30\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Cold and Flu'\cf2 ,\cf7 'Gsk'\cf2 ,\cf7 'Night Nurse'\cf2 ,\cf7 '160ml'\cf2 ,\cf6 9\cf2 ,\cf6 7.5\cf2 ,\cf6 30\cf2 ,\cf6 30\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Cold and Flu'\cf2 ,\cf7 'Lemsip'\cf2 ,\cf7 'Max'\cf2 ,\cf7 '16 caps'\cf2 ,\cf6 4.2\cf2 ,\cf6 3.7\cf2 ,\cf6 25\cf2 ,\cf6 25\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Cold and Flu'\cf2 ,\cf7 'Lemsip'\cf2 ,\cf7 'Standard'\cf2 ,\cf7 '10 sachets'\cf2 ,\cf6 4.5\cf2 ,\cf6 3.5\cf2 ,\cf6 25\cf2 ,\cf6 25\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Cold and Flu'\cf2 ,\cf7 'Sudafed'\cf2 ,\cf7 'Day and Night'\cf2 ,\cf7 '16 caps'\cf2 ,\cf6 4.5\cf2 ,\cf6 3.2\cf2 ,\cf6 30\cf2 ,\cf6 30\cf2 ,\cf6 1\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Cold and Flu'\cf2 ,\cf7 'Sudafed'\cf2 ,\cf7 'Max'\cf2 ,\cf7 '16 caps'\cf2 ,\cf6 4.2\cf2 ,\cf6 3.2\cf2 ,\cf6 30\cf2 ,\cf6 30\cf2 ,\cf6 1\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Cold and Flu'\cf2 ,\cf7 'Benylin'\cf2 ,\cf7 'Mucus relief'\cf2 ,\cf7 '16 caps'\cf2 ,\cf6 4.8\cf2 ,\cf6 3.2\cf2 ,\cf6 20\cf2 ,\cf6 20\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Cold and Flu'\cf2 ,\cf7 'Benylin'\cf2 ,\cf7 '4 flu'\cf2 ,\cf7 '24 caps'\cf2 ,\cf6 6\cf2 ,\cf6 4.9\cf2 ,\cf6 20\cf2 ,\cf6 20\cf2 ,null\cf4 )\cf2 ,\
+\
+      \cf4 (\cf7 'Skincare'\cf2 ,\cf7 'E45'\cf2 ,\cf7 'Psoriasis cream'\cf2 ,\cf7 '50ml'\cf2 ,\cf6 20\cf2 ,\cf6 16\cf2 ,\cf6 15\cf2 ,\cf6 15\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Skincare'\cf2 ,\cf7 'Eurax'\cf2 ,\cf7 'Skin cream'\cf2 ,\cf7 '100g'\cf2 ,\cf6 5.7\cf2 ,\cf6 4.2\cf2 ,\cf6 15\cf2 ,\cf6 15\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Skincare'\cf2 ,\cf7 'Eucerin'\cf2 ,\cf7 'Skin relief cream'\cf2 ,\cf7 '50ml'\cf2 ,\cf6 9\cf2 ,\cf6 7\cf2 ,\cf6 20\cf2 ,\cf6 20\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Skincare'\cf2 ,\cf7 'Eucerin'\cf2 ,\cf7 'Face scrub'\cf2 ,\cf7 '100ml'\cf2 ,\cf6 7.5\cf2 ,\cf6 6\cf2 ,\cf6 20\cf2 ,\cf6 20\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Skincare'\cf2 ,\cf7 'Dermalex'\cf2 ,\cf7 'Psoriasis cream'\cf2 ,\cf7 '150ml'\cf2 ,\cf6 30\cf2 ,\cf6 25\cf2 ,\cf6 10\cf2 ,\cf6 10\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Skincare'\cf2 ,\cf7 'Dermalex'\cf2 ,\cf7 'Repair and Restore'\cf2 ,\cf7 '100g'\cf2 ,\cf6 12\cf2 ,\cf6 10\cf2 ,\cf6 10\cf2 ,\cf6 10\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Skincare'\cf2 ,\cf7 'Dermalex'\cf2 ,\cf7 'Eczema cream'\cf2 ,\cf7 '100g'\cf2 ,\cf6 25\cf2 ,\cf6 22.2\cf2 ,\cf6 5\cf2 ,\cf6 5\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Skincare'\cf2 ,\cf7 'Cetaphil'\cf2 ,\cf7 'Moisturising cream'\cf2 ,\cf7 '50ml'\cf2 ,\cf6 10\cf2 ,\cf6 7.6\cf2 ,\cf6 20\cf2 ,\cf6 20\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Skincare'\cf2 ,\cf7 'Cetaphil'\cf2 ,\cf7 'Exfoliating cleanser'\cf2 ,\cf7 '180ml'\cf2 ,\cf6 12\cf2 ,\cf6 10.1\cf2 ,\cf6 20\cf2 ,\cf6 20\cf2 ,null\cf4 )\cf2 ,\
+\
+      \cf4 (\cf7 'Headaches and pain relief'\cf2 ,\cf7 'Nurofen'\cf2 ,\cf7 'Meltlets'\cf2 ,\cf7 '16 caps'\cf2 ,\cf6 4\cf2 ,\cf6 3.7\cf2 ,\cf6 40\cf2 ,\cf6 40\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Headaches and pain relief'\cf2 ,\cf7 'Nurofen'\cf2 ,\cf7 'Express'\cf2 ,\cf7 '16 caps'\cf2 ,\cf6 4\cf2 ,\cf6 3.5\cf2 ,\cf6 30\cf2 ,\cf6 30\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Headaches and pain relief'\cf2 ,\cf7 'Nurofen'\cf2 ,\cf7 'Max strength'\cf2 ,\cf7 '32 caps'\cf2 ,\cf6 7\cf2 ,\cf6 6.2\cf2 ,\cf6 25\cf2 ,\cf6 25\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Headaches and pain relief'\cf2 ,\cf7 'Nurofen'\cf2 ,\cf7 'Standard'\cf2 ,\cf7 '16 caps'\cf2 ,\cf6 4\cf2 ,\cf6 3.2\cf2 ,\cf6 30\cf2 ,\cf6 30\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Headaches and pain relief'\cf2 ,\cf7 'Cuprofen '\cf2 ,\cf7 'Max strength'\cf2 ,\cf7 '96 caps'\cf2 ,\cf6 11\cf2 ,\cf6 9\cf2 ,\cf6 20\cf2 ,\cf6 20\cf2 ,\cf6 1\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Headaches and pain relief'\cf2 ,\cf7 'Solpadeine'\cf2 ,\cf7 'Headache'\cf2 ,\cf7 '16 caps'\cf2 ,\cf6 2\cf2 ,\cf6 1.6\cf2 ,\cf6 20\cf2 ,\cf6 20\cf2 ,\cf6 1\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Headaches and pain relief'\cf2 ,\cf7 'Anadin'\cf2 ,\cf7 'Extra'\cf2 ,\cf7 '16 caps'\cf2 ,\cf6 2.3\cf2 ,\cf6 2\cf2 ,\cf6 30\cf2 ,\cf6 30\cf2 ,\cf6 1\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Headaches and pain relief'\cf2 ,\cf7 'Anadin'\cf2 ,\cf7 'Triple action'\cf2 ,\cf7 '12 caps'\cf2 ,\cf6 2\cf2 ,\cf6 1.9\cf2 ,\cf6 30\cf2 ,\cf6 30\cf2 ,\cf6 1\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Headaches and pain relief'\cf2 ,\cf7 'Anadin'\cf2 ,\cf7 'Original'\cf2 ,\cf7 '16 caps'\cf2 ,\cf6 1.8\cf2 ,\cf6 1.5\cf2 ,\cf6 30\cf2 ,\cf6 30\cf2 ,\cf6 1\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Headaches and pain relief'\cf2 ,\cf7 'Disprin'\cf2 ,\cf7 'Soluble'\cf2 ,\cf7 '32 tablets'\cf2 ,\cf6 3.6\cf2 ,\cf6 2.8\cf2 ,\cf6 20\cf2 ,\cf6 20\cf2 ,\cf6 1\cf4 )\cf2 ,\
+\
+      \cf4 (\cf7 'Digestion'\cf2 ,\cf7 'Dioralyte'\cf2 ,\cf7 'Blackcurrant'\cf2 ,\cf7 '12 sachets'\cf2 ,\cf6 8\cf2 ,\cf6 7.3\cf2 ,\cf6 20\cf2 ,\cf6 20\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Digestion'\cf2 ,\cf7 'Dioralyte'\cf2 ,\cf7 'Lemon'\cf2 ,\cf7 '12 sachets'\cf2 ,\cf6 8\cf2 ,\cf6 7.3\cf2 ,\cf6 20\cf2 ,\cf6 20\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Digestion'\cf2 ,\cf7 'Gaviscon'\cf2 ,\cf7 'Chewable'\cf2 ,\cf7 '24 tablets'\cf2 ,\cf6 4.2\cf2 ,\cf6 3.5\cf2 ,\cf6 25\cf2 ,\cf6 25\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Digestion'\cf2 ,\cf7 'Senokot'\cf2 ,\cf7 'Max'\cf2 ,\cf7 '10 tablets'\cf2 ,\cf6 3\cf2 ,\cf6 2.7\cf2 ,\cf6 10\cf2 ,\cf6 10\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Digestion'\cf2 ,\cf7 'Gaviscon'\cf2 ,\cf7 'Advance'\cf2 ,\cf7 '300ml'\cf2 ,\cf6 10\cf2 ,\cf6 8.1\cf2 ,\cf6 10\cf2 ,\cf6 10\cf2 ,null\cf4 )\cf2 ,\
+\
+      \cf4 (\cf7 'Allergy'\cf2 ,\cf7 'Benadryl'\cf2 ,\cf7 'Relief'\cf2 ,\cf7 '24 caps'\cf2 ,\cf6 9\cf2 ,\cf6 7.1\cf2 ,\cf6 20\cf2 ,\cf6 20\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Allergy'\cf2 ,\cf7 'Piriteze'\cf2 ,\cf7 'tabs'\cf2 ,\cf7 '7 tablets'\cf2 ,\cf6 3\cf2 ,\cf6 2.3\cf2 ,\cf6 20\cf2 ,\cf6 20\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'Allergy'\cf2 ,\cf7 'Beconase'\cf2 ,\cf7 'Relief'\cf2 ,\cf7 '100 sprays'\cf2 ,\cf6 6\cf2 ,\cf6 4\cf2 ,\cf6 20\cf2 ,\cf6 20\cf2 ,null\cf4 )\cf2 ,\
+\
+      \cf4 (\cf7 'First aid'\cf2 ,\cf7 'Dettol'\cf2 ,\cf7 'Antiseptic'\cf2 ,\cf7 '500ml'\cf2 ,\cf6 3.2\cf2 ,\cf6 3\cf2 ,\cf6 20\cf2 ,\cf6 20\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'First aid'\cf2 ,\cf7 'Dettol'\cf2 ,\cf7 'Hand sanitizer'\cf2 ,\cf7 '500ml'\cf2 ,\cf6 7\cf2 ,\cf6 6.3\cf2 ,\cf6 50\cf2 ,\cf6 50\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'First aid'\cf2 ,\cf7 'Elastoplast'\cf2 ,\cf7 'plasters'\cf2 ,\cf7 '20 plasters'\cf2 ,\cf6 3\cf2 ,\cf6 2\cf2 ,\cf6 30\cf2 ,\cf6 30\cf2 ,null\cf4 )\cf2 ,\
+      \cf4 (\cf7 'First aid'\cf2 ,\cf7 'TCP'\cf2 ,\cf7 'Liquid'\cf2 ,\cf7 '200ml'\cf2 ,\cf6 4\cf2 ,\cf6 3.2\cf2 ,\cf6 20\cf2 ,\cf6 20\cf2 ,null\cf4 )\cf2 ;\
+UPDATE \cf4 shop_product \cf2 SET \cf5 branch_id \cf4 = \cf6 1\cf2 ;\
+\
+CREATE TABLE \cf4 customer (\
+      \cf5 id \cf2 SERIAL PRIMARY KEY NOT NULL,\
+      \cf5 first_name \cf2 VARCHAR\cf4 (\cf6 36\cf4 ) \cf2 NOT NULL,\
+      \cf5 last_name \cf2 VARCHAR\cf4 (\cf6 36\cf4 ) \cf2 NOT NULL,\
+      \cf5 email \cf2 VARCHAR\cf4 (\cf6 256\cf4 ) \cf2 NOT NULL,\
+      \cf5 postcode \cf2 VARCHAR\cf4 (\cf6 8\cf4 ) \cf2 NOT NULL,\
+      \cf5 address \cf2 VARCHAR\cf4 (\cf6 128\cf4 )\cf2 ,\
+      \cf5 phone_no \cf2 VARCHAR\cf4 (\cf6 12\cf4 )\
+)\cf2 ;\
+INSERT INTO \cf4 customer(\cf5 first_name\cf2 ,\cf5 last_name\cf2 ,\cf5 email\cf2 ,\cf5 postcode\cf4 ) \cf2 VALUES\cf4 (\cf7 'CW'\cf2 ,\cf7 'Yip'\cf2 ,\cf7 'y@gmail.com'\cf2 ,\cf7 'SW7 2AZ'\cf4 )\cf2 ;\
+\
+CREATE TABLE \cf4 orders (\
+    \cf5 id \cf2 SERIAL PRIMARY KEY NOT NULL,\
+    \cf5 date \cf2 TIMESTAMP NOT NULL,\
+    \cf5 customer_id \cf2 INT REFERENCES \cf4 customer (\cf5 id\cf4 )\
+)\cf2 ;\
+INSERT INTO \cf4 orders(\cf5 date\cf2 ,\cf5 customer_id\cf4 ) \cf2 VALUES\cf4 (\cf7 '2020-11-14 16:00:00'\cf2 ,\cf6 1\cf4 )\cf2 ;\
+\
+CREATE TABLE \cf4 ordered_product (\
+     \cf5 id \cf2 SERIAL PRIMARY KEY NOT NULL,\
+     \cf5 name \cf2 VARCHAR\cf4 (\cf6 32\cf4 ) \cf2 NOT NULL,\
+     \cf5 quantity \cf2 INTEGER NOT NULL,\
+     \cf5 sell_price \cf2 DECIMAL\cf4 (\cf6 10\cf2 ,\cf6 2\cf4 ) \cf2 NOT NULL,\
+     \cf5 orders_id \cf2 INT REFERENCES \cf4 orders (\cf5 id\cf4 )\
+)\cf2 ;\
+INSERT INTO \cf4 ordered_product(\cf5 name\cf2 ,\cf5 quantity\cf2 ,\cf5 sell_price\cf2 ,\cf5 orders_id\cf4 ) \cf2 VALUES\cf4 (\cf7 'Cold and Flu Vicks First Defence'\cf2 ,\cf6 3\cf2 ,\cf6 6.8\cf2 ,\cf6 1\cf4 )\cf2 ;\
+\
+CREATE TABLE \cf4 card_details (\
+      \cf5 id \cf2 SERIAL PRIMARY KEY,\
+      \cf5 card_no \cf2 VARCHAR\cf4 (\cf6 16\cf4 )\cf2 ,\
+      \cf5 cvv \cf2 VARCHAR\cf4 (\cf6 3\cf4 )\cf2 ,\
+      \cf5 sort_code \cf2 VARCHAR\cf4 (\cf6 6\cf4 )\cf2 ,\
+      \cf5 account_no \cf2 VARCHAR\cf4 (\cf6 8\cf4 )\cf2 ,\
+      \cf5 customer_id \cf2 INT REFERENCES \cf4 customer (\cf5 id\cf4 )\
+)\cf2 ;\
+INSERT INTO \cf4 card_details(\cf5 card_no\cf2 ,\cf5 cvv\cf2 ,\cf5 sort_code\cf2 ,\cf5 account_no\cf2 ,\cf5 customer_id\cf4 ) \cf2 VALUES\cf4 (\cf7 '4638563856739684'\cf2 ,\cf7 '313'\cf2 ,\cf7 '600807'\cf2 ,\cf7 '36559684'\cf2 ,\cf6 1\cf4 )\cf2 ;\
 }
