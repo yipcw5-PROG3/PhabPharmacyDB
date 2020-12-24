@@ -12,7 +12,7 @@ INSERT INTO branch(name) VALUES('Green Park');
 INSERT INTO branch(name) VALUES('East End');
 
 CREATE TABLE shop_product (
-    id SERIAL PRIMARY KEY NOT NULL,
+    barcode SERIAL PRIMARY KEY NOT NULL,
     category VARCHAR(36) NOT NULL,
     brand VARCHAR(36) NOT NULL,
     name VARCHAR(36) NOT NULL,
@@ -103,7 +103,7 @@ CREATE TABLE orders (
 INSERT INTO orders(date,customer_id) VALUES('2020-11-14 16:00:00',1);
 
 CREATE TABLE ordered_product (
-     id SERIAL PRIMARY KEY NOT NULL,
+     barcode SERIAL PRIMARY KEY NOT NULL,
      name VARCHAR(32) NOT NULL,
      quantity INTEGER NOT NULL,
      sell_price DECIMAL(10,2) NOT NULL,
