@@ -11,3 +11,5 @@ database connection tree.
 6. Download the console.sql.html file from this repo and open it in a browser (eg Google Chrome). Copy the entire code to your clipboard.
 7. On IntelliJ, paste the code in the console window and then click the go button (play button top left of console window):-
 * All warnings/errors that mention "unsafe query" or "... already exists": execute or ignore as necessary.
+*AMENDMENTS - changed shop_product's 'limit_of_1' to BOOLEAN instead of SMALL INT (Easier to integrate to website)
+            - added customer_basket table: is similar to ordered_product table but includes 'amount'(from shop_product) and will dynamically change while customer adds/removes products from their basket (it essentially is the 'draft' before the confirmed ordered_product table)
